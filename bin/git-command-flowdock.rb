@@ -12,6 +12,10 @@ def flowdock_message(msg)
 end
 
 tmp = '/tmp/tmprepo'
-system("git clone #{ENV['GIT_REPO_URL']} #{tmp}")
-flowdock_message(`cd #{tmp} && #{ENV['GIT_COMMAND']}`)
 system("rm -rf #{tmp}")
+begin
+  system("git clone #{ENV['GIT_REPO_URL']} #{tmp}")
+  flowdock_message(`cd #{tmp} && #{ENV['GIT_COMMAND']}`)
+ensure
+  system("rm -rf #{tmp}")
+end
