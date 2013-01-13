@@ -1,11 +1,11 @@
-shortlog-flowdock
+git-command-flowdock
 =============
 
-Runs "git shortlog -ns" on a git repo and posts results to flowdock.
+Posts results of a command on a git repo to flowdock.
 
 Built for deployment to Heroku with a scheduled task.
 
-Required environment variables:
+Environment variables:
 * GIT_REPO_URL
 * GIT_COMMAND
 * FLOWDOCK_ORG
