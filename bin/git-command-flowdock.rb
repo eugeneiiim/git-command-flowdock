@@ -2,15 +2,15 @@ require 'rubygems'
 require "net/https"
 
 def flowdock_message(msg)
-  url = URI.parse("https://#{ENV['FLOWDOCK_TOKEN']}:DUMMY@api.flowdock.com/flows/#{ENV['FLOWDOCK_ORG']}/#{ENV['FLOWDOCK_FLOW']}/messages")
+  url = URI.parse("https://api.flowdock.com/flows/#{ENV['FLOWDOCK_ORG']}/#{ENV['FLOWDOCK_FLOW']}/messages")
   req = Net::HTTP::Post.new(url.path)
   req.basic_auth ENV['FLOWDOCK_TOKEN'], 'DUMMY'
   req.set_form_data({:event => 'message', :content => msg })
   res = Net::HTTP.new(url.host, url.port)
   res.use_ssl = true
   puts "Posting to flowdock: #{msg}"
-  res.start {|http| http.request(req) }
-  puts 'Post to flowdock complete.'
+  r = res.start {|http| http.request(req) }
+  puts "Post to flowdock complete with response: #{r.code} #{r.message}"
 end
 
 def psystem(cmd)
