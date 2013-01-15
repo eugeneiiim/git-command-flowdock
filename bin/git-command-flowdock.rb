@@ -8,14 +8,21 @@ def flowdock_message(msg)
   req.set_form_data({:event => 'message', :content => msg })
   res = Net::HTTP.new(url.host, url.port)
   res.use_ssl = true
+  puts "Posting to flowdock: #{msg}"
   res.start {|http| http.request(req) }
+  puts 'Post to flowdock complete.'
+end
+
+def psystem(cmd)
+  puts cmd
+  system(cmd)
 end
 
 tmp = '/tmp/tmprepo'
-system("rm -rf #{tmp}")
+psystem("rm -rf #{tmp}")
 begin
-  system("git clone #{ENV['GIT_REPO_URL']} #{tmp}")
+  psystem("git clone #{ENV['GIT_REPO_URL']} #{tmp}")
   flowdock_message(`cd #{tmp} && #{ENV['GIT_COMMAND']}`)
 ensure
-  system("rm -rf #{tmp}")
+  psystem("rm -rf #{tmp}")
 end
